@@ -51,21 +51,22 @@ def nonlocal_nlo_term(p, k, L, n, l):
     return ((p/L)**2 + (k/L)**2)/2 * nonlocal_lo_term(p, k, L, n, l)
 
 
-def construct_helium4_system(R, ell, nq=200):
-    qmesh = Mesh(0, 10*2/R, nq)
+class Helium4System(System):
+    def __init__(self, R, ell, nq=200):
+        qmesh = Mesh(0, 10*2/R, nq)
 
-    lo_xterm = NonlocalCounterterm(
-        lambda p, k, L: nonlocal_lo_term(p, k, L, NCT, ell),
-        lambda p, k, L: nonlocal_nlo_term(p, k, L, NCT, ell),
-        lambda p, k, L: nonlocal_regulator(p, L, NCT, ell) * nonlocal_regulator(k,
-            L, NCT, ell),
-        qmesh, R, ell
-    )
+        xterm = NonlocalCounterterm(
+            lambda p, k, L: nonlocal_lo_term(p, k, L, NCT, ell),
+            lambda p, k, L: nonlocal_nlo_term(p, k, L, NCT, ell),
+            lambda p, k, L: nonlocal_regulator(p, L, NCT, 0) * nonlocal_regulator(k,
+                L, NCT, 0),
+            qmesh, R, ell
+        )
 
-    interaction = Interaction(
-        long_range_potential,
-        lo_xterm,
-        RMESH
-    )
+        interaction = Interaction(
+            long_range_potential,
+            xterm,
+            RMESH
+        )
 
-    return System(interaction, MASS/2, ell)
+        super().__init__(interaction, MASS/2, ell)
