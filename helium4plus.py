@@ -1,5 +1,6 @@
 '''
   LM2M2-like vdW interaction for the 4He system
+  C_6 in increased such that r_0 is the LM2M2 r_0
 '''
 
 import numpy as np
@@ -9,14 +10,8 @@ FACTOR = 12.11928 #  K.Å^2
 MASS = 1.0/FACTOR # 1/(K•Å^2)
 
 # From the LM2M2 potential...
-HBAR = 1.0
-KB = 1.0
-c6 = 1.34687065
-RM = 2.9695 #  Å
-EPS_OVER_KB = 10.97/FACTOR # 1/Å^2
-EPS = EPS_OVER_KB * KB #  1/Å^2
-C6 = EPS * RM**6 * c6 * FACTOR # K•Å^6
-BETA6 = (MASS*C6)**0.25 # Å
+BETA6 = 5.54125
+C6 = BETA6**4/MASS
 RMESH = Mesh(0, 20*BETA6, 3000)
 
 B2 = 1.31e-3 # 2-body binding energy, K
