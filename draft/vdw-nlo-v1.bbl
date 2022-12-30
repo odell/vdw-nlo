@@ -1,0 +1,57 @@
+\begin{thebibliography}{6}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname bibnamefont\endcsname\relax
+  \def\bibnamefont#1{#1}\fi
+\expandafter\ifx\csname bibfnamefont\endcsname\relax
+  \def\bibfnamefont#1{#1}\fi
+\expandafter\ifx\csname citenamefont\endcsname\relax
+  \def\citenamefont#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\providecommand{\bibinfo}[2]{#2}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{\citenamefont{Gao}(1998{\natexlab{a}})}]{PhysRevA.58.1728}
+\bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Gao}}, \bibinfo{journal}{Phys.
+  Rev. A} \textbf{\bibinfo{volume}{58}}, \bibinfo{pages}{1728}
+  (\bibinfo{year}{1998}{\natexlab{a}}),
+  \urlprefix\url{https://link.aps.org/doi/10.1103/PhysRevA.58.1728}.
+
+\bibitem[{\citenamefont{Odell et~al.}(2021)\citenamefont{Odell, Deltuva, and
+  Platter}}]{Odell:2021ryo}
+\bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Odell}},
+  \bibinfo{author}{\bibfnamefont{A.}~\bibnamefont{Deltuva}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{L.}~\bibnamefont{Platter}},
+  \bibinfo{journal}{Phys. Rev. A} \textbf{\bibinfo{volume}{104}},
+  \bibinfo{pages}{023306} (\bibinfo{year}{2021}), \eprint{2105.03442}.
+
+\bibitem[{\citenamefont{Gao}(1998{\natexlab{b}})}]{PhysRevA.58.4222}
+\bibinfo{author}{\bibfnamefont{B.}~\bibnamefont{Gao}}, \bibinfo{journal}{Phys.
+  Rev. A} \textbf{\bibinfo{volume}{58}}, \bibinfo{pages}{4222}
+  (\bibinfo{year}{1998}{\natexlab{b}}),
+  \urlprefix\url{https://link.aps.org/doi/10.1103/PhysRevA.58.4222}.
+
+\bibitem[{\citenamefont{Elhatisari et~al.}(2013)\citenamefont{Elhatisari,
+  K\"onig, Lee, and Hammer}}]{Elhatisari:2013swa}
+\bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{Elhatisari}},
+  \bibinfo{author}{\bibfnamefont{S.}~\bibnamefont{K\"onig}},
+  \bibinfo{author}{\bibfnamefont{D.}~\bibnamefont{Lee}}, \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{H.~W.} \bibnamefont{Hammer}},
+  \bibinfo{journal}{Phys. Rev. A} \textbf{\bibinfo{volume}{87}},
+  \bibinfo{pages}{052705} (\bibinfo{year}{2013}), \eprint{1303.5261}.
+
+\bibitem[{\citenamefont{Ji and Phillips}(2012)}]{Ji:2012nj}
+\bibinfo{author}{\bibfnamefont{C.}~\bibnamefont{Ji}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{D.~R.} \bibnamefont{Phillips}}
+  (\bibinfo{year}{2012}), \eprint{1212.1845}.
+
+\bibitem[{\citenamefont{Aziz and Slaman}(1991)}]{doi:10.1063/1.460139}
+\bibinfo{author}{\bibfnamefont{R.~A.} \bibnamefont{Aziz}} \bibnamefont{and}
+  \bibinfo{author}{\bibfnamefont{M.~J.} \bibnamefont{Slaman}},
+  \bibinfo{journal}{The Journal of Chemical Physics}
+  \textbf{\bibinfo{volume}{94}}, \bibinfo{pages}{8047} (\bibinfo{year}{1991}),
+  \eprint{https://doi.org/10.1063/1.460139},
+  \urlprefix\url{https://doi.org/10.1063/1.460139}.
+
+\end{thebibliography}
