@@ -85,3 +85,30 @@ class NonlocalHelium4System(System):
         )
 
         super().__init__(interaction, MASS/2, ell)
+
+
+class NonlocalHelium4System2(System):
+    '''
+    Hacky way to reproduce the nonlocal system that we stumbled upon.
+    '''
+    def __init__(self, R, ell, n1, n2, nct, nq=200):
+        qmesh = Mesh(0, 10*2/R, nq)
+
+        xterm = NonlocalCounterterm(
+            lambda p, k, L: nonlocal_lo_term(p, k, L, nct, ell),
+            lambda p, k, L: nonlocal_nlo_term(p, k, L, nct, ell),
+            lambda p, k, L: nonlocal_regulator(p, L, nct, 0) * nonlocal_regulator(k,
+                L, nct, 0),
+            qmesh, R, ell
+        )
+
+        interaction = Interaction(
+            lambda r, R: long_range_potential(r, R, n1, n2),
+            xterm,
+            RMESH,
+            scheme='semilocal'
+        )
+
+        interaction.scheme = 'nonlocal'
+
+        super().__init__(interaction, MASS/2, ell)
