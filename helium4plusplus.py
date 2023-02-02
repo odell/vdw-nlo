@@ -5,13 +5,13 @@
 '''
 
 import numpy as np
-from mu2 import Mesh, NonlocalCounterterm, Interaction, System
+from mu2 import Mesh, NonlocalCounterterm, Interaction, System, LocalCounterterm
 
 FACTOR = 12.11928 #  K.Å^2
 MASS = 1.0/FACTOR # 1/(K•Å^2)
 
 # From the LM2M2 potential...
-BETA6 = 5.54125
+BETA6 = 5.54125 # increased over LM2M2 value
 C6 = BETA6**4/MASS
 RMESH = Mesh(0, 20*BETA6, 3000)
 
@@ -110,5 +110,49 @@ class NonlocalHelium4System2(System):
         )
 
         interaction.scheme = 'nonlocal'
+
+        super().__init__(interaction, MASS/2, ell)
+
+
+from scipy.special import erf, erfc
+
+def local_short_distance_regulator(r, R, n):
+    return erf((r/R)**n)
+
+
+def vdw_potential(r, R, n):
+    return local_short_distance_regulator(r, R, n) * fr(r)
+
+
+def lo_local_counterterm(r, R):
+    return erfc((r/R)**6)
+
+
+def nlo_local_counterterm(r, R):
+    a = 12 * r**4 * np.exp(-(r/R)**12)
+    b = 12 * r**12 - 5 * R**12
+    c = np.sqrt(np.pi) * R**18
+    return a * b / c
+
+
+class LocalHelium4System(System):
+    def __init__(self, R, ell, n1, nq=200):
+        qmesh = Mesh(0, 10*2/R, nq)
+
+        xterm = LocalCounterterm(
+            lo_local_counterterm,
+            nlo_local_counterterm,
+            RMESH,
+            qmesh,
+            R,
+            ell
+        )
+
+        interaction = Interaction(
+            lambda r, R: vdw_potential(r, R, n1),
+            xterm,
+            RMESH,
+            scheme='local'
+        )
 
         super().__init__(interaction, MASS/2, ell)
