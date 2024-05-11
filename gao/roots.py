@@ -6,14 +6,17 @@ argc = len(sys.argv)
 l = int(sys.argv[1]) if argc > 1 else 0
 
 deltac = [9.654418e-2, 1.473792e-1, 4.306921e-1, 1.580826, 2.073296]
-Dmin = 0.01
-Dmax = 400
+ 
+Dmin = 6.25e-6
+Dmax = 10**2/16
 
-x = np.concatenate((
-    np.logspace(np.log10(0.0001), np.log10(1), 50),
-    np.linspace(1.1, 10, 100),
-    np.linspace(10.1, 400, 300)
-))
+momenta = np.loadtxt('../datfiles/phase_shifts/momenta.txt')
+BETA6 = 5.54125
+x = (momenta * BETA6 / 4)**2
+# x = np.concatenate((
+#     np.logspace(np.log10(Dmin), np.log10(1), 50),
+#     np.linspace(1.1, Dmax, 400)
+# ))
 
 xi = np.array([x[0]])
 y = np.array([])
