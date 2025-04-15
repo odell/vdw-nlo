@@ -5,14 +5,15 @@
 '''
 
 import numpy as np
-from mu2 import Mesh, NonlocalCounterterm, Interaction, System, LocalCounterterm
+from mu2 import Mesh, NonlocalCounterterm, Interaction, System, LocalCounterterm, cscatter
+from scipy import optimize
 
 FACTOR = 12.11928 #  K.Å^2
 MASS = 1.0/FACTOR # 1/(K•Å^2)
 
 # From the LM2M2 potential...
 BETA6 = 5.54125 # increased over LM2M2 value
-C6 = BETA6**4/MASS
+C6 = BETA6**4/MASS # K•Å^6
 RMESH = Mesh(0, 20*BETA6, 3000)
 
 B2 = 1.31e-3 # 2-body binding energy, K
@@ -112,6 +113,32 @@ class NonlocalHelium4System2(System):
         interaction.scheme = 'nonlocal'
 
         super().__init__(interaction, MASS/2, ell)
+    
+
+    def kcotd_gen_pert1b_fast(self, ks, c_00, c_01, c_21):
+        v0 = self.v_tilde + self.interaction.counterterm.gen(c_00, 0)
+        v1 = self.interaction.counterterm.gen(c_01, 0) + self.interaction.counterterm.gen(0, c_21)
+        return np.array(
+            [cscatter.kcotdelta_pert1_py(ki, v0, v1, self.q, self.wq, self.qmax, self.ell, 2*self.mu) for ki in ks]
+        )
+    
+
+    def a0_and_r0_pert1b_fast(self, c_00, c_01, c_21, ks, p0=None, return_sigma=False):
+        '''
+        Returns a_0 and r_0 after fitting the effective range parameters.
+        '''
+        assert self.ell == 0, 'This is not an S-wave (l = 0) system.'
+        kcds = self.kcotd_gen_pert1b_fast(ks, c_00, c_01, c_21)
+        result = optimize.curve_fit(
+            lambda x, c0, c2, c3: c0 + c2*x**2 + c3*x**3,
+            ks, kcds, p0=p0, maxfev=20000
+        )
+        pars, cov = result
+        sig = np.sqrt(np.diag(cov))
+        if return_sigma:
+            return -1/pars[0], 2*pars[1], sig
+        else:
+            return -1/pars[0], 2*pars[1]
 
 
 from scipy.special import erf, erfc
